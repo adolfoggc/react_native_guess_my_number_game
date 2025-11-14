@@ -26,8 +26,8 @@ const styles = StyleSheet.create({
   numberInput: {
     height: 55,
     fontSize: 32,
-    borderColor: '#ddb52f',
-    borderWidth: 2,
+    borderBottomColor: '#ddb52f',
+    borderBottomWidth: 2,
     color: '#ddb52f',
     marginVertical: 10,
     fontWeight: 'bold',
