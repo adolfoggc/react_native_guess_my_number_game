@@ -1,3 +1,4 @@
+import Colors from "@/constants/Colors";
 import GameScreen from "@/screens/GameScreen";
 import StartGameScreen from "@/screens/StartGameScreen";
 import { LinearGradient } from 'expo-linear-gradient';
@@ -20,7 +21,7 @@ export default function Index() {
 
   return (
     <LinearGradient 
-      colors={['#4e0329','#ddb52f']} 
+      colors={[Colors.primary700, Colors.accent500]} 
       style={styles.rootScreen}>
       <ImageBackground 
         source={require('../assets/images/background.png')}
