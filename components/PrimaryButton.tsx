@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-function PrimaryButton({ children, onPress } : any) {
+function PrimaryButton({ children, onPress } : primaryButtonProps) {
 
   return (
     <View style={styles.buttonOuterContainer}>
@@ -41,3 +41,8 @@ const styles = StyleSheet.create({
 })
 
 export default PrimaryButton;
+
+interface primaryButtonProps {
+  children: string,
+  onPress: () => void
+}
