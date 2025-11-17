@@ -3,6 +3,7 @@ import StartGameScreen from "@/screens/StartGameScreen";
 import { LinearGradient } from 'expo-linear-gradient';
 import { useState } from 'react';
 import { ImageBackground, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Index() {
   const [userNumber, setUserNumber] = useState<number | null>() ;
@@ -28,7 +29,9 @@ export default function Index() {
         imageStyle={styles.backgroundImage}
 
       >
-        { screen }
+        <SafeAreaView style={styles.rootScreen}>
+          { screen }
+        </SafeAreaView>
       </ImageBackground>
     </LinearGradient>
   );
