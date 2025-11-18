@@ -1,7 +1,8 @@
 import NumberContainer from '@/components/game/NumberContainer';
+import PrimaryButton from '@/components/ui/PrimaryButton';
 import Title from '@/components/ui/Title';
 import { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 
 function generateRandomBetween(min: number, max: number, exclude: number) {
   const rndNum = Math.floor(Math.random() * (max - min)) + min;
@@ -13,20 +14,63 @@ function generateRandomBetween(min: number, max: number, exclude: number) {
   }
 }
 
+let minBoundary = 1;
+let maxBoundary = 100;
+
 function GameScreen({userNumber}: gameScreenProps) {
-  const initialGuess = generateRandomBetween(1, 100, userNumber)
+  const initialGuess = generateRandomBetween(minBoundary, maxBoundary, userNumber);
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
+
+  function guessIsLowerThanNumber(direction: string){
+    return direction==='lower' && currentGuess < userNumber;
+  }
+
+  function guessIsGreaterThanNumber(direction: string){
+    return direction==='greater' && currentGuess > userNumber;
+  }
+
+  function nextGuessHandler(direction: string) {
+    if(currentGuess == userNumber) {
+      Alert.alert('Acertou, mizerávi!', 'Aêeeee', [
+        {text: 'Que lindo!', style: 'default'}
+      ])
+      return;
+    }
+
+    if( guessIsLowerThanNumber(direction) ||  
+        guessIsGreaterThanNumber(direction)
+    ){
+      Alert.alert("Don't lie!", 'You know that this is wrong...', [
+        {text: 'Sorry!', style: 'cancel'}
+      ]);
+      return;
+    }
+
+    if (direction === 'lower') {
+      maxBoundary = currentGuess
+    } else {
+      minBoundary = currentGuess + 1
+    }
+    console.log('=====================')
+    console.log('min', minBoundary);
+    console.log('max', maxBoundary);
+    setCurrentGuess( 
+      generateRandomBetween(minBoundary, maxBoundary, currentGuess)
+    );
+    console.log('current', currentGuess);
+  }
 
   return(
     <View style={styles.screen}>
       <Title>Opponent's Guess</Title>
       <NumberContainer>{currentGuess}</NumberContainer>
-      <View>
-        <Text>
-          Higher or Lower
-        </Text>
-        {//+-
-        }
+      <View style={styles.buttonsContainer}>
+        <View style={styles.buttonContainer}>
+          <PrimaryButton onPress={nextGuessHandler.bind(this, 'lower') }>-</PrimaryButton>
+        </View>
+        <View style={styles.buttonContainer}>
+          <PrimaryButton onPress={nextGuessHandler.bind(this, 'greater')}>+</PrimaryButton>
+        </View>
       </View>
       <View>
         {//LOG ROUNDS
@@ -48,5 +92,15 @@ const styles = StyleSheet.create (
       flex: 1,
       padding: 12
     },
+    buttonsContainer: {
+      flexDirection: 'row'
+    },
+    buttonContainer: {
+      flex: 1
+    }
   }
 )
+
+interface nextGuessHandlerBindParams {
+  
+}
