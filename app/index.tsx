@@ -29,7 +29,7 @@ export default function Index() {
   }
 
   if(gameIsOver && userNumber) {
-    screen = <GameOverScreen/>
+    screen = <GameOverScreen last_number={userNumber}/>
   }
 
   return (

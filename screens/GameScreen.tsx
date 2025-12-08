@@ -1,4 +1,6 @@
 import NumberContainer from '@/components/game/NumberContainer';
+import Card from '@/components/ui/Card';
+import InstructionText from '@/components/ui/InstructionText';
 import PrimaryButton from '@/components/ui/PrimaryButton';
 import Title from '@/components/ui/Title';
 import { useEffect, useState } from 'react';
@@ -35,7 +37,9 @@ function GameScreen({userNumber, onGameOver}: gameScreenProps) {
     }
   }, [currentGuess, userNumber, onGameOver]);
 
-  function nextGuessHandler(direction: string) {
+  function nextGuessHandler(this: any, direction: string) {
+    console.log('=====================')
+    console.log('current', currentGuess);
     if(currentGuess == userNumber) {
       Alert.alert('Acertou, mizerávi!', 'Aêeeee', [
         {text: 'Que lindo!', style: 'default'}
@@ -57,27 +61,28 @@ function GameScreen({userNumber, onGameOver}: gameScreenProps) {
     } else {
       minBoundary = currentGuess + 1
     }
-    console.log('=====================')
-    console.log('min', minBoundary);
-    console.log('max', maxBoundary);
+    console.log('new min', minBoundary);
+    console.log('new max', maxBoundary);
     setCurrentGuess( 
       generateRandomBetween(minBoundary, maxBoundary, currentGuess)
     );
-    console.log('current', currentGuess);
   }
 
   return(
     <View style={styles.screen}>
       <Title>Opponent's Guess</Title>
       <NumberContainer>{currentGuess}</NumberContainer>
-      <View style={styles.buttonsContainer}>
-        <View style={styles.buttonContainer}>
-          <PrimaryButton onPress={nextGuessHandler.bind(this, 'lower') }>-</PrimaryButton>
+      <Card>
+        <InstructionText>Higher or Lower?</InstructionText>
+        <View style={styles.buttonsContainer}>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, 'lower') }>-</PrimaryButton>
+          </View>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, 'greater')}>+</PrimaryButton>
+          </View>
         </View>
-        <View style={styles.buttonContainer}>
-          <PrimaryButton onPress={nextGuessHandler.bind(this, 'greater')}>+</PrimaryButton>
-        </View>
-      </View>
+      </Card>
       <View>
         {//LOG ROUNDS
         }
