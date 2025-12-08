@@ -1,4 +1,5 @@
 import Colors from '@/constants/Colors';
+import Ionicons from '@expo/vector-icons';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 function PrimaryButton({ children, onPress } : primaryButtonProps) {
@@ -14,7 +15,11 @@ function PrimaryButton({ children, onPress } : primaryButtonProps) {
           onPress={onPress} 
           android_ripple={{color: Colors.primary600, foreground: true}}
         >
-          <Text style={styles.buttonText}>{children}</Text>
+          { 
+            typeof children == typeof Ionicons 
+            ? <View>{children}</View>
+            : <Text style={styles.buttonText}>{children}</Text>
+          }
       </Pressable>
     </View>
   )
@@ -44,6 +49,6 @@ const styles = StyleSheet.create({
 export default PrimaryButton;
 
 interface primaryButtonProps {
-  children: string,
+  children: any,
   onPress: () => void
 }
