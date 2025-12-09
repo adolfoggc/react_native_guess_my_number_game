@@ -5,7 +5,7 @@ import PrimaryButton from '@/components/ui/PrimaryButton';
 import Title from '@/components/ui/Title';
 import { Ionicons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 
 function generateRandomBetween(min: number, max: number, exclude: number) {
   const rndNum = Math.floor(Math.random() * (max - min)) + min;
@@ -23,6 +23,7 @@ let maxBoundary = 100;
 function GameScreen({userNumber, onGameOver}: gameScreenProps) {
   const initialGuess = generateRandomBetween(1, 100, userNumber);
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
+  const [guessRounds, setGuessRounds] =  useState([initialGuess]);
 
   function guessIsLowerThanNumber(direction: string){
     return direction==='lower' && currentGuess < userNumber;
@@ -63,9 +64,9 @@ function GameScreen({userNumber, onGameOver}: gameScreenProps) {
       minBoundary = currentGuess + 1
     }
 
-    setCurrentGuess( 
-      generateRandomBetween(minBoundary, maxBoundary, currentGuess)
-    );
+    let newRandomNumber = generateRandomBetween(minBoundary, maxBoundary, currentGuess);
+    setCurrentGuess(newRandomNumber);
+    setGuessRounds(previousGuessRounds => [newRandomNumber, ...previousGuessRounds]);
   }
 
   return(
@@ -90,8 +91,9 @@ function GameScreen({userNumber, onGameOver}: gameScreenProps) {
         </View>
       </Card>
       <View>
-        {//LOG ROUNDS
-        }
+        { guessRounds.map(guessRound => 
+          <Text key={guessRound}>{guessRound}</Text>
+        )}
       </View>
     </View>
   )
