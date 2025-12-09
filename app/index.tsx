@@ -12,6 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 export default function Index() {
   const [userNumber, setUserNumber] = useState<number | null>(null) ;
   const [gameIsOver, setGameIsOver] = useState(true);
+  const [guessRounds, setGuessRounds] = useState(0);
 
   const [fontsLoaded] = useFonts({
     'open-sans': require('../assets/fonts/OpenSans-Regular.ttf'),
@@ -31,6 +32,11 @@ export default function Index() {
     setGameIsOver(true);
   }
 
+  function startNewGameHandler() {
+    setUserNumber(null);
+    setGuessRounds(0);
+  }
+
   let screen = <StartGameScreen onPickNumber={pickedNumberHandler}/>;
 
   if(userNumber) {
@@ -40,7 +46,10 @@ export default function Index() {
   }
 
   if(gameIsOver && userNumber) {
-    screen = <GameOverScreen last_number={userNumber}/>
+    screen = <GameOverScreen 
+      last_number={userNumber} 
+      roundsNumber={guessRounds} 
+      onStartNewGame={startNewGameHandler}/>
   }
 
   return (

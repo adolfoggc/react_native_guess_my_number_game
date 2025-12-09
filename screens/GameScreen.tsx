@@ -38,13 +38,13 @@ function GameScreen({userNumber, onGameOver}: gameScreenProps) {
     }
   }, [currentGuess, userNumber, onGameOver]);
 
+  useEffect(() => {
+    minBoundary = 1;
+    maxBoundary = 100;
+  }, []);
+
   function nextGuessHandler(this: any, direction: string) {
-    console.log('=====================')
-    console.log('current', currentGuess);
     if(currentGuess == userNumber) {
-      Alert.alert('Acertou, mizerávi!', 'Aêeeee', [
-        {text: 'Que lindo!', style: 'default'}
-      ])
       return;
     }
 
@@ -62,8 +62,7 @@ function GameScreen({userNumber, onGameOver}: gameScreenProps) {
     } else {
       minBoundary = currentGuess + 1
     }
-    console.log('new min', minBoundary);
-    console.log('new max', maxBoundary);
+
     setCurrentGuess( 
       generateRandomBetween(minBoundary, maxBoundary, currentGuess)
     );
