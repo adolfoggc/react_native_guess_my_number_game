@@ -5,7 +5,7 @@ import PrimaryButton from '@/components/ui/PrimaryButton';
 import Title from '@/components/ui/Title';
 import { Ionicons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
-import { Alert, StyleSheet, Text, View } from 'react-native';
+import { Alert, FlatList, StyleSheet, Text, View } from 'react-native';
 
 function generateRandomBetween(min: number, max: number, exclude: number) {
   const rndNum = Math.floor(Math.random() * (max - min)) + min;
@@ -90,11 +90,13 @@ function GameScreen({userNumber, onGameOver}: gameScreenProps) {
           </View>
         </View>
       </Card>
-      <View>
-        { guessRounds.map(guessRound => 
-          <Text key={guessRound}>{guessRound}</Text>
-        )}
-      </View>
+      <FlatList
+        alwaysBounceVertical={false}
+        data={guessRounds}
+        renderItem= {(guessRound) => {
+          return <Text key={guessRound.index}>{guessRound.item}</Text>
+        }}>
+      </FlatList>
     </View>
   )
 }
