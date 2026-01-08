@@ -5,7 +5,7 @@ import PrimaryButton from '@/components/ui/PrimaryButton';
 import Title from '@/components/ui/Title';
 import { Ionicons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
-import { Alert, FlatList, StyleSheet, View } from 'react-native';
+import { Alert, FlatList, StyleSheet, useWindowDimensions, View } from 'react-native';
 import GuessLogItem from '../components/game/GuessLogItem';
 
 function generateRandomBetween(min: number, max: number, exclude: number) {
@@ -25,6 +25,7 @@ function GameScreen({userNumber, onGameOver}: gameScreenProps) {
   const initialGuess = generateRandomBetween(1, 100, userNumber);
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
   const [guessRounds, setGuessRounds] =  useState([initialGuess]);
+  const { width, height } = useWindowDimensions();
 
   function guessIsLowerThanNumber(direction: string){
     return direction==='lower' && currentGuess < userNumber;
@@ -72,9 +73,8 @@ function GameScreen({userNumber, onGameOver}: gameScreenProps) {
 
   const guessRoundsListLength = guessRounds.length;
 
-  return(
-    <View style={styles.screen}>
-      <Title>{ "Opponent's Guess" }</Title>
+  let content = (
+    <>
       <NumberContainer>{currentGuess}</NumberContainer>
       <Card>
         <InstructionText style={styles.instructionText}>
@@ -93,6 +93,35 @@ function GameScreen({userNumber, onGameOver}: gameScreenProps) {
           </View>
         </View>
       </Card>
+    </>
+  )
+
+  //if device is on landscape
+  if(width > height) {
+    content = (
+      <>
+        <View style={styles.landscapeContainer}>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, 'lower') }>
+              <Ionicons name='remove' size={22}></Ionicons>
+            </PrimaryButton>
+          </View>
+          <NumberContainer>{currentGuess}</NumberContainer>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, 'greater')}>
+              <Ionicons name='add' size={22}></Ionicons>
+            </PrimaryButton>
+          </View>
+        </View>
+
+      </>
+    ) 
+  }
+
+  return(
+    <View style={styles.screen}>
+      <Title>{ "Opponent's Guess" }</Title>
+      { content }
       <View style={styles.listContainer}>
         <FlatList
           alwaysBounceVertical={false}
@@ -117,6 +146,10 @@ interface gameScreenProps {
 
 const styles = StyleSheet.create (
   {
+    landscapeContainer: {
+      flexDirection: 'row',
+      alignItems: 'center'
+    },
     instructionText: {
       marginBottom: 12
     },
